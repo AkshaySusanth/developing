@@ -2,8 +2,6 @@ name: Compile LaTeX
 
 on:
   push:
-    paths:
-      - '*.tex'
   workflow_dispatch:
 
 jobs:
@@ -43,20 +41,26 @@ jobs:
           name: compiled-pdf
           path: .
 
-      # Extract the original commit message
       - name: Get commit message
         id: vars
         run: |
           COMMIT_MESSAGE=$(jq -r .head_commit.message "$GITHUB_EVENT_PATH")
           echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_ENV
 
-      # Use the extracted commit message
-      - name: Commit PDF
+      # Configure Git to use the PAT and debug configuration
+      - name: Commit and Push PDF
         env:
-          TOKEN: ${{ secrets.PAT }}
+          TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add main.pdf
           git commit -m "${{ env.commit_message }}"
-          git push https://x-access-token:${TOKEN}@github.com/AkshaySusanth/developing.git HEAD:main
+
+          # Debugging: Print Git configuration and remote URL
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/AkshaySusanth/developing.git
+          git remote -v  # Output remote URL configuration
+          git config --list  # Output Git configuration for verification
+          
+          # Push the commit
+          git push origin HEAD:main
