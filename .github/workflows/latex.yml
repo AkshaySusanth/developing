@@ -50,7 +50,7 @@ jobs:
       # Configure Git to use the PAT and debug configuration
       - name: Commit and Push PDF
         env:
-          TOKEN: ${{ secrets.PAT_TOKEN }}
+          TOKEN: ${{ secrets.PAT }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
