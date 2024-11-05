@@ -50,15 +50,10 @@ jobs:
       # Configure Git to use the PAT and debug configuration
       - name: Commit and Push PDF
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
           git add main.pdf
           git commit -m "${{ env.commit_message }}"
-
-          # Debugging: Print Git configuration and remote URL
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/AkshaySusanth/developing.git
-          git remote -v  # Output remote URL configuration
-          git config --list  # Output Git configuration for verification
-          
-          # Push the commit
-          git push origin HEAD:main
+          git push      
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
