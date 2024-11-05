@@ -56,4 +56,4 @@ jobs:
           git commit -m "${{ env.commit_message }}"
           git push      
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
